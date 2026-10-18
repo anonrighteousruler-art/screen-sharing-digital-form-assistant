@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Assistant</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+    button { font-size: 1rem; padding: .6rem 1.4rem; border-radius: 6px; border: 0; background: #1a73e8; color: #fff; cursor: pointer; }
+    button.stop { background: #d93025; }
+    #status { margin-left: 1rem; color: #666; }
+    #log { margin-top: 1.5rem; }
+    #log p { margin: .4rem 0; }
+    #log .user { color: #555; }
+    #log .agent { color: #1a73e8; }
+  </style>
+</head>
+<body>
+  <h1>Form Assistant</h1>
+  <p>Share the tab or window with your form, then talk. The assistant reads the form and walks you through it field by field.</p>
+  <button id="toggle">Start</button><span id="status"></span>
+  <div id="log"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
