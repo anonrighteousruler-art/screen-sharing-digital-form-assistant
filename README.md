@@ -8,11 +8,12 @@ Built on the Gemini Live API: mic audio and one screen frame per second go up, s
 
 ```sh
 npm install
-cp .env.example .env   # add your key from https://aistudio.google.com/apikey
-npm run dev
+npm run build
 ```
 
-Open the local URL in Chrome or Edge, click **Start**, share the tab or window with your form, and start talking.
+This makes one self-contained file, `dist/index.html`. Open it in Chrome or Edge (double-clicking it works), paste your Gemini key from https://aistudio.google.com/apikey, click **Start**, share the tab or window with your form, and start talking.
+
+For development, `npm run dev` serves it with live reload. You can put the key in `.env` (see `.env.example`) so you don't have to paste it.
 
 ## Files
 
@@ -22,5 +23,5 @@ Open the local URL in Chrome or Edge, click **Start**, share the tab or window w
 
 ## Notes
 
-- The API key is bundled into the page, so this is for running locally. Before hosting it publicly, issue short-lived tokens from a small server instead.
+- The key you paste is saved in that browser only. Don't host the page publicly with a key baked in through `.env`; for a public site, issue short-lived tokens from a small server instead.
 - To try a different Live model, set `VITE_GEMINI_MODEL` in `.env`.

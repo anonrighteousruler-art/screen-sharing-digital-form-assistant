@@ -2,7 +2,6 @@ import { GoogleGenAI, Modality, type LiveServerMessage, type Session } from '@go
 import { Player, startMic } from './audio';
 import { startScreen } from './screen';
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
 const MODEL = (import.meta.env.VITE_GEMINI_MODEL as string | undefined) || 'gemini-3.1-flash-live-preview';
 
 const SYSTEM_PROMPT = `You are a friendly voice assistant helping the user fill out an online form.
@@ -17,6 +16,15 @@ You can see the user's shared screen. You cannot click or type; you guide by voi
 const toggle = document.getElementById('toggle') as HTMLButtonElement;
 const status = document.getElementById('status')!;
 const log = document.getElementById('log')!;
+const keyInput = document.getElementById('key') as HTMLInputElement;
+
+// The key stays in this browser only.
+const KEY_STORAGE = 'gemini-api-key';
+try {
+  keyInput.value = localStorage.getItem(KEY_STORAGE) || import.meta.env.VITE_GEMINI_API_KEY || '';
+} catch {
+  keyInput.value = import.meta.env.VITE_GEMINI_API_KEY || '';
+}
 
 let stop: (() => void) | null = null;
 
@@ -38,10 +46,14 @@ function transcribe(who: 'user' | 'agent', text: string) {
 }
 
 async function start() {
-  if (!API_KEY) {
-    setStatus('Set VITE_GEMINI_API_KEY in .env and restart.');
+  const apiKey = keyInput.value.trim();
+  if (!apiKey) {
+    setStatus('Paste your Gemini API key first.');
     return;
   }
+  try {
+    localStorage.setItem(KEY_STORAGE, apiKey);
+  } catch {}
   toggle.disabled = true;
   const cleanups: (() => void)[] = [];
   let ended = false;
@@ -64,7 +76,7 @@ async function start() {
     cleanups.push(() => player.close());
 
     setStatus('Connecting…');
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     session = await ai.live.connect({
       model: MODEL,
       config: {
