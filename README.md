@@ -1,11 +1,27 @@
-<div align="center">
+# Form Assistant
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A voice agent that watches your shared screen and talks you through filling out an online form, one field at a time. It guides by voice only; you do the clicking and typing.
 
-  <h1>Built with AI Studio</h2>
+Built on the Gemini Live API: mic audio and one screen frame per second go up, spoken replies come back.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Run it
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+```sh
+npm install
+npm run build
+```
 
-</div>
+This makes one self-contained file, `dist/index.html`. Open it in Chrome or Edge (double-clicking it works), paste your Gemini key from https://aistudio.google.com/apikey, click **Start**, share the tab or window with your form, and start talking.
+
+For development, `npm run dev` serves it with live reload. You can put the key in `.env` (see `.env.example`) so you don't have to paste it.
+
+## Files
+
+- `src/main.ts` — session setup, system prompt, transcript
+- `src/audio.ts` — mic capture (16 kHz PCM) and reply playback (24 kHz PCM)
+- `src/screen.ts` — screen capture, one JPEG frame per second
+
+## Notes
+
+- The key you paste is saved in that browser only. Don't host the page publicly with a key baked in through `.env`; for a public site, issue short-lived tokens from a small server instead.
+- To try a different Live model, set `VITE_GEMINI_MODEL` in `.env`.
